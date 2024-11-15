@@ -1,0 +1,849 @@
+<html>
+<head>
+    <!-- Judul halaman web -->
+    <title>Web Page</title>
+    <!-- Import font awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Styling untuk body */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #3b5998;
+            scroll-behavior: smooth;
+        }
+        /* Styling untuk navbar */
+        .navbar {
+            background-color: #f0f0f0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* Logo di navbar */
+        .navbar .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #3b5998;
+            border-radius: 50%;
+        }
+        /* Menu di navbar */
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+        }
+        /* Item menu di navbar */
+        .navbar .menu-item {
+            margin: 0 10px;
+            color: #3b5998;
+            cursor: pointer;
+            position: relative;
+        }
+        /* Efek hover pada item menu */
+        .navbar .menu-item:hover {
+            text-decoration: underline;
+        }
+
+        /* Dropdown menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+        }
+
+        /* Dropdown items */
+        .dropdown-content a {
+            color: #3b5998;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        /* Hover effect untuk dropdown items */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Menampilkan dropdown saat hover */
+        .menu-item:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Konten utama */
+        .content {
+            padding: 20px;
+            background-color: #3b5998;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Bagian utama konten */
+        .content .main-section {
+            background-color: #f0f0f0;
+            width: 90%;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            gap: 30px;
+        }
+        /* Animasi untuk main section */
+        .content .main-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Box kiri dan tengah untuk matriks */
+        .content .main-section .box-left,
+        .content .main-section .box-middle {
+            width: 35%;
+            height: 400px;
+            background-color: #d3d3d3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow: auto;
+        }
+        /* Input matriks */
+        .matrix-input {
+            display: grid;
+            gap: 8px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            max-width: 100%;
+            max-height: 100%;
+        }
+        /* Input field untuk matriks */
+        .matrix-input input {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        /* Efek focus pada input matriks */
+        .matrix-input input:focus {
+            border-color: #3b5998;
+        }
+        /* Box kecil untuk hasil */
+        .content .main-section .small-box {
+            width: 30%;
+            height: 400px;
+            background-color: #d3d3d3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 20px;
+        }
+        /* Judul konten */
+        .content .title {
+            color: white;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        /* Animasi untuk judul */
+        .content .title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Box konten */
+        .content .box {
+            background-color: #f0f0f0;
+            width: 80%;
+            height: 200px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        /* Animasi untuk box */
+        .content .box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Footer */
+        .footer {
+            background-color: #6d84b4;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        /* Animasi untuk footer */
+        .footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Foto profil di footer */
+        .footer .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #d3d3d3;
+            margin-bottom: 10px;
+        }
+        /* Nama di footer */
+        .footer .name {
+            color: white;
+            margin-bottom: 5px;
+        }
+        /* Role di footer */
+        .footer .role {
+            color: white;
+            margin-bottom: 20px;
+        }
+        /* Copyright di footer */
+        .footer .copyright {
+            color: white;
+        }
+
+        /* Panel tombol */
+        .btn-panel {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            flex-wrap: wrap;
+        }
+        /* Animasi untuk panel tombol */
+        .btn-panel.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Styling tombol */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background-color: white;
+            color: #3b5998;
+            cursor: pointer;
+            width: 150px;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        /* Efek hover pada tombol */
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(0,0,0,0.2), transparent);
+            transition: all 0.6s;
+        }
+        .btn:hover:before {
+            left: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background-color: #f8f9fa;
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* Ikon dalam tombol */
+        .btn i {
+            font-size: 14px;
+        }
+        /* Tombol kalkulasi */
+        .btn-calc {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+            color: white;
+            cursor: pointer;
+            width: 150px;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Efek hover pada tombol kalkulasi */
+        .btn-calc:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(0,0,0,0.2), transparent);
+            transition: all 0.6s;
+        }
+        .btn-calc:hover:before {
+            left: 100%;
+        }
+        .btn-calc:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+        }
+        .btn-calc:active {
+            transform: translateY(1px) scale(0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* Simbol operasi dan sama dengan */
+        .op-symbol, .eq-symbol {
+            font-size: 32px; /* Diperbesar dari 24px */
+            font-weight: bold;
+            color: #3b5998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px; /* Diperbesar dari 40px */
+            height: 60px; /* Diperbesar dari 40px */
+            border-radius: 50%;
+            background-color: #d3d3d3;
+            margin: auto;
+            align-self: center;
+            transition: all 0.3s ease;
+        }
+        /* Efek hover pada simbol */
+        .op-symbol:hover, .eq-symbol:hover {
+            background-color: #c0c0c0;
+            transform: scale(1.1);
+        }
+
+        /* Tombol ukuran */
+        .btn-size {
+            background: linear-gradient(145deg, #3b5998, #4a69bd);
+            color: white;
+        }
+
+        /* Tombol reset */
+        .btn-reset {
+            background: linear-gradient(145deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        /* Pemilihan ukuran matriks */
+        .matrix-size-select {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        /* Animasi untuk pemilihan ukuran matriks */
+        .matrix-size-select.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dropdown ukuran matriks */
+        select.matrix-size {
+            padding: 8px 15px;
+            border: 2px solid #3b5998;
+            border-radius: 5px;
+            background-color: white;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Efek focus pada dropdown */
+        select.matrix-size:focus {
+            border-color: #4a69bd;
+        }
+
+        /* Label untuk dropdown */
+        .matrix-label {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Container untuk setiap dropdown */
+        .matrix-select-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsif untuk layar kecil */
+        @media (max-width: 768px) {
+            .content .main-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .content .main-section .box-left,
+            .content .main-section .box-middle {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .content .main-section .small-box {
+                width: 90%;
+                height: 250px;
+            }
+            .btn-panel {
+                position: relative;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px 0;
+            }
+            .btn, .btn-calc {
+                width: 150px;
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+            .matrix-input input {
+                width: 50px; /* Disesuaikan untuk mobile */
+                height: 50px;
+                font-size: 16px;
+            }
+            .matrix-size-select {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        /* Kelas untuk menyembunyikan elemen */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo"></div>
+        <div class="menu">
+            <div class="menu-item">
+                Matriks
+                <div class="dropdown-content">
+                    <a onclick="showSection('operasi')">Operasi Matriks</a>
+                    <a onclick="showSection('transpose')">Transpose Matriks</a>
+                    <a onclick="showSection('determinan')">Determinan Matriks</a>
+                    <a onclick="showSection('invers')">Invers Matriks</a>
+                </div>
+            </div>
+            <div class="menu-item" onclick="showSection('linear')">Persamaan Linear</div>
+            <div class="menu-item" onclick="showSection('about')">About</div>
+        </div>
+    </div>
+    <!-- Konten Operasi Matriks -->
+    <div id="operasi" class="content">
+        <!-- Pemilihan ukuran matriks -->
+        <div class="matrix-size-select">
+            <div class="matrix-select-container">
+                <div class="matrix-label">Matriks 1</div>
+                <select class="matrix-size" onchange="handleMatrixSizeChange(this, 1)">
+                    <option value="1,1" selected>1x1</option>
+                    <option value="1,2">1x2</option>
+                    <option value="2,1">2x1</option>
+                    <option value="2,2">2x2</option>
+                    <option value="2,3">2x3</option>
+                    <option value="3,1">3x1</option>
+                    <option value="3,2">3x2</option>
+                    <option value="3,3">3x3</option>
+                    <option value="3,4">3x4</option>
+                    <option value="4,1">4x1</option>
+                    <option value="4,2">4x2</option>
+                    <option value="4,3">4x3</option>
+                    <option value="4,4">4x4</option>
+                    <option value="4,5">4x5</option>
+                    <option value="5,1">5x1</option>
+                    <option value="5,2">5x2</option>
+                    <option value="5,3">5x3</option>
+                    <option value="5,4">5x4</option>
+                    <option value="5,5">5x5</option>
+                </select>
+            </div>
+            <div class="matrix-select-container">
+                <div class="matrix-label">Matriks 2</div>
+                <select class="matrix-size" onchange="handleMatrixSizeChange(this, 2)">
+                    <option value="1,1" selected>1x1</option>
+                    <option value="1,2">1x2</option>
+                    <option value="2,1">2x1</option>
+                    <option value="2,2">2x2</option>
+                    <option value="2,3">2x3</option>
+                    <option value="3,1">3x1</option>
+                    <option value="3,2">3x2</option>
+                    <option value="3,3">3x3</option>
+                    <option value="3,4">3x4</option>
+                    <option value="4,1">4x1</option>
+                    <option value="4,2">4x2</option>
+                    <option value="4,3">4x3</option>
+                    <option value="4,4">4x4</option>
+                    <option value="4,5">4x5</option>
+                    <option value="5,1">5x1</option>
+                    <option value="5,2">5x2</option>
+                    <option value="5,3">5x3</option>
+                    <option value="5,4">5x4</option>
+                    <option value="5,5">5x5</option>
+                </select>
+            </div>
+        </div>
+        <!-- Area matriks -->
+        <div class="main-section">
+            <!-- Matriks pertama -->
+            <div class="box-left">
+                <div class="matrix-input" id="matrix1">
+                    <input type="number" id="m1-11">
+                </div>
+            </div>
+            <!-- Simbol operasi -->
+            <div class="op-symbol">+</div>
+            <!-- Matriks kedua -->
+            <div class="box-middle">
+                <div class="matrix-input" id="matrix2">
+                    <input type="number" id="m2-11">
+                </div>
+            </div>
+            <!-- Simbol sama dengan -->
+            <div class="eq-symbol">=</div>
+            <!-- Hasil perhitungan -->
+            <div class="small-box" id="result-matrix"></div>
+        </div>
+        <!-- Panel tombol operasi -->
+        <div class="btn-panel">
+            <button class="btn" onclick="setOperator('+')"><i class="fas fa-plus"></i>Tambah</button>
+            <button class="btn" onclick="setOperator('-')"><i class="fas fa-minus"></i>Kurang</button>
+            <button class="btn" onclick="setOperator('×')"><i class="fas fa-times"></i>Kali</button>
+            <button class="btn-calc" onclick="calculateResult()">Hitung Hasil</button>
+            <button class="btn btn-reset" onclick="resetMatrices()"><i class="fas fa-undo"></i>Reset</button>
+        </div>
+        <div class="title">Operasi Matriks</div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+
+    <!-- Konten Transpose Matriks -->
+    <div id="transpose" class="content hidden">
+        <div class="matrix-size-select">
+            <div class="matrix-select-container">
+                <div class="matrix-label">Ukuran Matriks</div>
+                <select class="matrix-size" onchange="handleTransposeMatrixSize(this)">
+                    <option value="1,1" selected>1x1</option>
+                    <option value="1,2">1x2</option>
+                    <option value="1,3">1x3</option>
+                    <option value="1,4">1x4</option>
+                    <option value="1,5">1x5</option>
+                    <option value="2,1">2x1</option>
+                    <option value="2,2">2x2</option>
+                    <option value="2,3">2x3</option>
+                    <option value="2,4">2x4</option>
+                    <option value="2,5">2x5</option>
+                    <option value="3,1">3x1</option>
+                    <option value="3,2">3x2</option>
+                    <option value="3,3">3x3</option>
+                    <option value="3,4">3x4</option>
+                    <option value="3,5">3x5</option>
+                    <option value="4,1">4x1</option>
+                    <option value="4,2">4x2</option>
+                    <option value="4,3">4x3</option>
+                    <option value="4,4">4x4</option>
+                    <option value="4,5">4x5</option>
+                    <option value="5,1">5x1</option>
+                    <option value="5,2">5x2</option>
+                    <option value="5,3">5x3</option>
+                    <option value="5,4">5x4</option>
+                    <option value="5,5">5x5</option>
+                </select>
+            </div>
+        </div>
+        <div class="main-section">
+            <div class="box-left">
+                <div class="matrix-input" id="transpose-matrix">
+                    <input type="number" id="t-11">
+                </div>
+            </div>
+            <div class="eq-symbol">→</div>
+            <div class="small-box" id="transpose-result"></div>
+        </div>
+        <div class="btn-panel">
+            <button class="btn-calc" onclick="calculateTranspose()">Hitung Transpose</button>
+            <button class="btn btn-reset" onclick="resetTranspose()"><i class="fas fa-undo"></i>Reset</button>
+        </div>
+        <div class="title">Transpose Matriks</div>
+    </div>
+
+    <!-- Konten Determinan Matriks -->
+    <div id="determinan" class="content hidden">
+        <div class="matrix-size-select">
+            <div class="matrix-select-container">
+                <div class="matrix-label">Ukuran Matriks</div>
+                <select class="matrix-size" onchange="handleDeterminantMatrixSize(this)">
+                    <option value="1,1" selected>1x1</option>
+                    <option value="1,2">1x2</option>
+                    <option value="1,3">1x3</option>
+                    <option value="2,1">2x1</option>
+                    <option value="2,2">2x2</option>
+                    <option value="2,3">2x3</option>
+                    <option value="3,1">3x1</option>
+                    <option value="3,2">3x2</option>
+                    <option value="3,3">3x3</option>
+                </select>
+            </div>
+        </div>
+        <div class="main-section">
+            <div class="box-left">
+                <div class="matrix-input" id="determinant-matrix">
+                    <input type="number" id="d-11">
+                </div>
+            </div>
+            <div class="eq-symbol">→</div>
+            <div class="small-box" id="determinant-result"></div>
+        </div>
+        <div class="btn-panel">
+            <button class="btn-calc" onclick="calculateDeterminant()">Hitung Determinan</button>
+            <button class="btn btn-reset" onclick="resetDeterminant()"><i class="fas fa-undo"></i>Reset</button>
+        </div>
+        <div class="title">Determinan Matriks</div>
+    </div>
+
+    <!-- Konten Invers Matriks -->
+    <div id="invers" class="content hidden">
+        <div class="matrix-size-select">
+            <div class="matrix-select-container">
+                <div class="matrix-label">Ukuran Matriks</div>
+                <select class="matrix-size" onchange="handleInverseMatrixSize(this)">
+                    <option value="2,2" selected>2x2</option>
+                    <option value="3,3">3x3</option>
+                    <option value="4,4">4x4</option>
+                    <option value="5,5">5x5</option>
+                </select>
+            </div>
+        </div>
+        <div class="main-section">
+            <div class="box-left">
+                <div class="matrix-input" id="inverse-matrix">
+                    <input type="number" id="i-11">
+                    <input type="number" id="i-12">
+                    <input type="number" id="i-21">
+                    <input type="number" id="i-22">
+                </div>
+            </div>
+            <div class="eq-symbol">→</div>
+            <div class="small-box" id="inverse-result"></div>
+        </div>
+        <div class="btn-panel">
+            <button class="btn-calc" onclick="calculateInverse()">Hitung Invers</button>
+            <button class="btn btn-reset" onclick="resetInverse()"><i class="fas fa-undo"></i>Reset</button>
+        </div>
+        <div class="title">Invers Matriks</div>
+    </div>
+
+    <!-- Konten Persamaan Linear -->
+    <div id="linear" class="content hidden">
+        <div class="main-section">
+            <div class="box-left"></div>
+            <div class="box-middle"></div>
+            <div class="small-box"></div>
+        </div>
+        <div class="title">Persamaan Linear</div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+    <!-- Footer -->
+    <div id="about" class="footer hidden">
+        <div class="profile-pic"></div>
+        <div class="name">Settle Megatoners</div>
+        <div class="role">HODOR HODOR</div>
+        <div class="copyright">Copyright © 2023</div>
+    </div>
+
+    <script>
+        let matrix1Rows = 1;
+        let matrix1Cols = 1;
+        let matrix2Rows = 1;
+        let matrix2Cols = 1;
+        let transposeRows = 1;
+        let transposeCols = 1;
+        let determinantSize = 1;
+        
+        // Fungsi untuk menampilkan section yang dipilih
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content, .footer');
+            sections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        // Fungsi untuk mengatur operator
+        function setOperator(operator) {
+            const operatorSymbol = document.querySelector('.op-symbol');
+            operatorSymbol.textContent = operator;
+        }
+
+        // Fungsi untuk menangani perubahan ukuran matriks transpose
+        function handleTransposeMatrixSize(selectElement) {
+            const [rows, cols] = selectElement.value.split(',').map(Number);
+            transposeRows = rows;
+            transposeCols = cols;
+            updateTransposeMatrixSize();
+            // Reset hasil saat ukuran berubah
+            document.getElementById('transpose-result').innerHTML = '';
+        }
+
+        // Fungsi untuk memperbarui tampilan matriks transpose
+        function updateTransposeMatrixSize() {
+            const matrix = document.getElementById('transpose-matrix');
+            matrix.style.gridTemplateColumns = `repeat(${transposeCols}, 1fr)`;
+            matrix.innerHTML = '';
+            
+            // Buat input fields baru sesuai ukuran yang dipilih
+            for (let i = 1; i <= transposeRows; i++) {
+                for (let j = 1; j <= transposeCols; j++) {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.id = `t-${i}${j}`;
+                    input.value = ''; // Reset nilai input
+                    matrix.appendChild(input);
+                }
+            }
+        }
+
+        // Fungsi untuk mereset matriks transpose
+        function resetTranspose() {
+            // Reset ukuran ke default (1x1)
+            transposeRows = 1;
+            transposeCols = 1;
+            
+            // Reset dropdown ke nilai default
+            const select = document.querySelector('#transpose .matrix-size');
+            select.value = '1,1';
+            
+            // Update tampilan matriks
+            updateTransposeMatrixSize();
+            
+            // Bersihkan hasil
+            document.getElementById('transpose-result').innerHTML = '';
+            
+            // Reset semua nilai input ke kosong
+            const inputs = document.querySelectorAll('#transpose-matrix input');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+        }
+
+        // Fungsi untuk menangani perubahan ukuran matriks determinan
+        function handleDeterminantMatrixSize(selectElement) {
+            const [rows, cols] = selectElement.value.split(',').map(Number);
+            determinantSize = rows;
+            updateDeterminantMatrixSize();
+            // Reset hasil saat ukuran berubah
+            setMatrixSize(rows, cols, matrixNum);
+        }
+
+        // Fungsi untuk mengatur ukuran matriks
+        function setMatrixSize(rows, cols, matrixNum) {
+            if (matrixNum === 1) {
+                matrix1Rows = rows;
+                matrix1Cols = cols;
+                updateMatrixSize(1);
+            } else {
+                matrix2Rows = rows;
+                matrix2Cols = cols;
+                updateMatrixSize(2);
+            }
+        }
+
+        // Fungsi untuk memperbarui tampilan matriks
+        function updateMatrixSize(matrixNum) {
+            const matrix = document.getElementById(`matrix${matrixNum}`);
+            const rows = matrixNum === 1 ? matrix1Rows : matrix2Rows;
+            const cols = matrixNum === 1 ? matrix1Cols : matrix2Cols;
+            
+            matrix.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            matrix.innerHTML = '';
+            
+            for (let i = 1; i <= rows; i++) {
+                for (let j = 1; j <= cols; j++) {
+                    matrix.innerHTML += `<input type="number" id="m${matrixNum}-${i}${j}" min="0">`;
+                }
+            }
+        }
+
+        // Fungsi untuk mereset matriks
+        function resetMatrices() {
+            matrix1Rows = 1;
+            matrix1Cols = 1;
+            matrix2Rows = 1;
+            matrix2Cols = 1;
+            document.querySelectorAll('.matrix-size').forEach((select, index) => {
+                select.value = '1,1';
+                updateMatrixSize(index + 1);
+            });
+            document.getElementById('result-matrix').innerHTML = '';
+        }
+
+        // Fungsi untuk menghitung hasil
+        function calculateResult() {
+            // Implementasi perhitungan matriks akan ditambahkan di sini
+            console.log('Calculating result...');
+        }
+
+        // Event listener saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            const elements = document.querySelectorAll('.main-section, .title, .box, .footer, .btn-panel, .matrix-size-select');
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
